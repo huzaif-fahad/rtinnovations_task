@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'models/app_localization.dart';
 import 'package:flutter/material.dart' show BuildContext, Localizations;
 
@@ -24,6 +26,10 @@ class AppStrings {
 
   String defaultLanguageCode = 'en';
 
+  // Errors
+  String get stateNotHandled => kDebugMode
+      ? 'State not handled in the widget. Please check the state and handle it properly.'
+      : 'Something went wrong. Please try again later.';
   String employeeListTitle = 'Employee List';
   String emptyRecords = 'No employee records found';
 
