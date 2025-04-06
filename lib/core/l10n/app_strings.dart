@@ -24,5 +24,8 @@ class AppStrings {
 
   String defaultLanguageCode = 'en';
 
+  String employeeListTitle = 'Employee List';
+  String emptyRecords = 'No employee records found';
+
   // define app strings from here
 }

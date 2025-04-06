@@ -10,4 +10,6 @@ abstract class AppThemes {
   Color get primaryColor;
 
   Color get fontColor;
+
+  Color get whiteColor;
 }
