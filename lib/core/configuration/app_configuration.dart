@@ -1,3 +1,5 @@
+import 'package:google_fonts/google_fonts.dart';
+
 import '/router/app_router.dart';
 import '../l10n/models/app_localization.dart' show Language, AppLocalization;
 import '../themes/app_theme.dart';
@@ -22,6 +24,8 @@ class AppConfiguration extends ChangeNotifier {
 
     // initialize go router
     AppRouter().init();
+
+    GoogleFonts.config.allowRuntimeFetching = true;
   }
 
   void changeTheme(AppThemes theme) {

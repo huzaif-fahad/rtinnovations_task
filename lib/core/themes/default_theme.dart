@@ -1,4 +1,3 @@
-import 'package:rtinnovations_task/core/themes/typography/app_typography.dart';
 import 'package:rtinnovations_task/utils/extensions/colors_exs.dart';
 
 import 'app_theme.dart';
@@ -9,7 +8,7 @@ class DefaultTheme extends AppThemes {
   Color get fontColor => Colors.black;
 
   @override
-  String get fontFamily => AppTypography.roboto;
+  String get fontFamily => '';
 
   @override
   Color get primaryColor => ('#1DA1F2').toColor();

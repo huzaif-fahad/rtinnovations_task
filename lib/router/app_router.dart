@@ -1,3 +1,4 @@
+import 'package:rtinnovations_task/features/employee_home/view/employee_home.dart';
 import 'package:rtinnovations_task/features/splash_screen.dart';
 
 import 'app_middleware.dart';
@@ -28,7 +29,7 @@ class AppRouter {
       GoRoute(
         path: '/home',
         builder: (BuildContext context, GoRouterState state) {
-          return const SizedBox();
+          return const EmployeeHome();
         },
         name: 'home',
       ),
