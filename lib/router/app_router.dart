@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rtinnovations_task/features/employee_home/logic/employee_bloc.dart';
 import 'package:rtinnovations_task/features/employee_home/view/employee_home.dart';
 import 'package:rtinnovations_task/features/splash_screen.dart';
 
@@ -29,7 +31,11 @@ class AppRouter {
       GoRoute(
         path: '/home',
         builder: (BuildContext context, GoRouterState state) {
-          return const EmployeeHome();
+          return BlocProvider(
+            create: (context) => EmployeesBloc(),
+            lazy: false,
+            child: const EmployeeHome(),
+          );
         },
         name: 'home',
       ),

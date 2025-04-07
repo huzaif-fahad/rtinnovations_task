@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
+import '../../features/employee_home/models/position.dart';
 
 /// A wrapper class for SQLite database operations in Flutter
 class DatabaseHelper {
@@ -36,9 +37,9 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         position TEXT,
-        start_date INTEGER,
-        end_date INTEGER,
-        created_at INTEGER NOT NULL
+        fromDate TEXT NOT NULL,
+        toDate TEXT,
+        createdAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
     ''');
   }
@@ -106,10 +107,96 @@ class DatabaseHelper {
     return Sqflite.firstIntValue(results) ?? 0;
   }
 
+  Future<void> insertDummyData() async {
+    final db = await database;
+
+    final dummyData = [
+      {
+        'id': 1,
+        'name': 'Alice Johnson',
+        'position': 'prodDesigner',
+        'fromDate': '2022-01-01T00:00:00.000',
+        'toDate': null
+      },
+      {
+        'id': 2,
+        'name': 'Bob Smith',
+        'position': 'flutterDev',
+        'fromDate': '2021-06-15T00:00:00.000',
+        'toDate': null
+      },
+      {
+        'id': 3,
+        'name': 'Charlie Brown',
+        'position': 'qaTester',
+        'fromDate': '2023-03-01T00:00:00.000',
+        'toDate': '2023-08-01T00:00:00.000'
+      },
+      {
+        'id': 4,
+        'name': 'Diana Prince',
+        'position': 'productOwner',
+        'fromDate': '2020-11-20T00:00:00.000',
+        'toDate': null
+      },
+      {
+        'id': 5,
+        'name': 'Ethan Hunt',
+        'position': 'prodDesigner',
+        'fromDate': '2021-03-10T00:00:00.000',
+        'toDate': '2022-12-31T00:00:00.000'
+      },
+      {
+        'id': 6,
+        'name': 'Fiona Gallagher',
+        'position': 'flutterDev',
+        'fromDate': '2020-07-01T00:00:00.000',
+        'toDate': null
+      },
+      {
+        'id': 7,
+        'name': 'George Clooney',
+        'position': 'qaTester',
+        'fromDate': '2022-05-15T00:00:00.000',
+        'toDate': null
+      },
+      {
+        'id': 8,
+        'name': 'Hannah Montana',
+        'position': 'productOwner',
+        'fromDate': '2019-11-01T00:00:00.000',
+        'toDate': '2021-06-30T00:00:00.000'
+      }
+    ];
+
+    for (var employee in dummyData) {
+      await db.insert('employees', employee,
+          conflictAlgorithm: ConflictAlgorithm.replace);
+    }
+  }
+
   Future<void> close() async {
     if (_database != null) {
       await _database!.close();
       _database = null;
+    }
+  }
+
+  Future<void> deleteDatabase() async {
+    try {
+      // Close the database connection first
+      await close();
+
+      // Get the path to the database file
+      String databasesPath = await getDatabasesPath();
+      String path = join(databasesPath, 'app_database.db');
+
+      // Delete the database file
+      await databaseFactory.deleteDatabase(path);
+      print('Database deleted successfully');
+    } catch (error) {
+      print('Error deleting database: $error');
+      throw error; // Re-throw to allow caller to handle
     }
   }
 }

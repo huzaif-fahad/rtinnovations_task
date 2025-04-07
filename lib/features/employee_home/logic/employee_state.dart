@@ -8,15 +8,28 @@ final class EmployeesEmpty extends EmployeesState {}
 final class EmployeesLoading extends EmployeesState {}
 
 final class EmployeesLoaded extends EmployeesState {
-  final Map<String, List<Employee>> employees;
-  final int page;
-  final int totalPages;
+  final Map<cat.Category, List<Employee>> employees;
 
   EmployeesLoaded({
     required this.employees,
-    required this.page,
-    required this.totalPages,
   });
+
+  EmployeesLoaded copyWith({
+    Map<cat.Category, List<Employee>>? employees,
+  }) {
+    return EmployeesLoaded(
+      employees: employees ?? this.employees,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is EmployeesLoaded && mapEquals(other.employees, employees);
+  }
+
+  @override
+  int get hashCode => employees.hashCode;
 }
 
 final class EmployeesError extends EmployeesState {

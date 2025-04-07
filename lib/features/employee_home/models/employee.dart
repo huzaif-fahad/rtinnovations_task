@@ -1,7 +1,7 @@
 import 'position.dart';
 
 class Employee {
-  final String id;
+  final int id;
   final String name;
   final Position position;
   final DateTime? fromDate;
@@ -18,7 +18,7 @@ class Employee {
   // Factory constructor for deserialization
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-      id: json['id'] as String,
+      id: json['id'] as int,
       name: json['name'] as String,
       position: Position.values.firstWhere(
         (e) => e.toString().split('.').last == json['position'],

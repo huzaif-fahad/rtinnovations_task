@@ -19,12 +19,10 @@ extension PositionExtension on Position {
     }
   }
 
-  static Position? fromString(String value) {
-    for (var position in Position.values) {
-      if (position.toString().split('.').last == value) {
-        return position;
-      }
-    }
-    return null;
+  static Position fromString(String value) {
+    return Position.values.firstWhere(
+      (position) => position.toString().split('.').last == value,
+      orElse: () => Position.flutterDev,
+    );
   }
 }
