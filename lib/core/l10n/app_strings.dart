@@ -30,7 +30,17 @@ class AppStrings {
   String get stateNotHandled => kDebugMode
       ? 'State not handled in the widget. Please check the state and handle it properly.'
       : 'Something went wrong. Please try again later.';
+
+  String get errorOccured => kDebugMode
+      ? 'An error occurred. Please check the logs for more details.'
+      : 'An error occurred. Please try again later.';
+
+  String currentEmployees = 'Current Employees';
+  String previousEmployees = 'Previous Employees';
+  String addEmployeeTitle = 'Add Employee Details';
+  String editEmployeeTitle = 'Edit Employee Details';
   String employeeListTitle = 'Employee List';
+  String swipeToDelete = 'Swipe left to delete';
   String emptyRecords = 'No employee records found';
 
   // define app strings from here

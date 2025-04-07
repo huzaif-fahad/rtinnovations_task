@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rtinnovations_task/utils/extensions/colors_exs.dart';
 
 import '../theme_handler.dart';
 
@@ -24,5 +26,17 @@ class AppTypography {
     fontSize: fontSize18,
     color: ThemeHandler.currentTheme.whiteColor,
     fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle h6 = GoogleFonts.roboto(
+    fontSize: fontSize16,
+    color: ThemeHandler.currentTheme.primaryColor,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle body1 = GoogleFonts.roboto(
+    fontSize: 15,
+    color: ('#949C9E').toColor(),
+    fontWeight: FontWeight.w400,
   );
 }

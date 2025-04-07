@@ -8,7 +8,7 @@ class DefaultTheme extends AppThemes {
   Color get fontColor => Colors.black;
 
   @override
-  String get fontFamily => '';
+  String get fontFamily => 'Roboto';
 
   @override
   Color get primaryColor => ('#1DA1F2').toColor();
