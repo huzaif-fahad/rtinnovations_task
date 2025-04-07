@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rtinnovations_task/features/employee_home/logic/employee_bloc.dart';
+import 'package:rtinnovations_task/features/employee_home/view/add_employee.dart';
 import 'package:rtinnovations_task/features/employee_home/view/employee_home.dart';
 import 'package:rtinnovations_task/features/splash_screen.dart';
 
+import '../features/employee_home/controllers/emp_controller.dart';
 import 'app_middleware.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -38,6 +40,31 @@ class AppRouter {
           );
         },
         name: 'home',
+      ),
+      GoRoute(
+        path: '/add-empl',
+        builder: (BuildContext context, GoRouterState state) {
+          return PopScope(
+            onPopInvokedWithResult: (didPop, d) {
+              if (didPop) {
+                // This function will be called when popping back from add-empl to home
+                print('Navigated back from AddEmployee to EmployeeHome');
+
+                print('Result: $d');
+                // You can add additional logic here if needed
+              }
+              return;
+            },
+            child: BlocProvider(
+              create: (context) => EmployeesBloc(),
+              lazy: false,
+              child: AddEmployee(
+                controller: state.extra as EmployeeController,
+              ),
+            ),
+          );
+        },
+        name: 'add-empl',
       ),
     ];
   }

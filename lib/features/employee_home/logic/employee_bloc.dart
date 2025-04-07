@@ -70,9 +70,12 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
       final db = DatabaseHelper.instance;
 
       final Map<String, dynamic> employeeData = event.employee.toJson();
-      employeeData['created_at'] = DateTime.now().millisecondsSinceEpoch;
 
       await db.insert('employees', employeeData);
+
+      if (kDebugMode) {
+        print("Employee added: ${event.employee.toJson()}");
+      }
 
       add(EmployeesFetchEvent());
     } catch (error) {

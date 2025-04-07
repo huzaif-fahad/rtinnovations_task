@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rtinnovations_task/core/l10n/app_strings.dart';
 import 'package:rtinnovations_task/core/themes/theme_handler.dart';
 import 'package:rtinnovations_task/core/themes/typography/app_typography.dart';
@@ -8,7 +9,6 @@ import 'package:rtinnovations_task/features/employee_home/logic/employee_bloc.da
 import 'package:rtinnovations_task/features/employee_home/view/widgets/employee_list.dart';
 import 'package:rtinnovations_task/utils/extensions/colors_exs.dart';
 import 'package:rtinnovations_task/utils/extensions/responsive_exs.dart';
-import '../../../utils/custom_date_picker.dart';
 import 'widgets/empty_records.dart';
 
 class EmployeeHome extends StatefulWidget {
@@ -30,6 +30,7 @@ class _EmployeeHomeState extends State<EmployeeHome> {
 
   @override
   Widget build(BuildContext context) {
+    employeeController.context = context;
     return Scaffold(
         backgroundColor: ('#F2F2F2').toColor(),
         appBar: AppBar(
@@ -39,6 +40,22 @@ class _EmployeeHomeState extends State<EmployeeHome> {
           ),
           backgroundColor: ThemeHandler.currentTheme.primaryColor,
         ),
+        floatingActionButton: ValueListenableBuilder(
+            valueListenable: employeeController.isBottomBarVisible,
+            builder: (c, v, ch) {
+              return !v
+                  ? FloatingActionButton(
+                      onPressed: () {
+                        context.go('/add-empl', extra: employeeController);
+                      },
+                      backgroundColor: ThemeHandler.currentTheme.primaryColor,
+                      child: const Icon(
+                        Icons.add,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const SizedBox.shrink();
+            }),
         bottomNavigationBar: ValueListenableBuilder(
           valueListenable: employeeController.isBottomBarVisible,
           builder: (context, value, child) {
@@ -56,7 +73,7 @@ class _EmployeeHomeState extends State<EmployeeHome> {
                 ),
                 FloatingActionButton(
                   onPressed: () {
-                    CustomDatePicker.show(context);
+                    context.go('/add-empl', extra: employeeController);
                   },
                   elevation: 0,
                   backgroundColor: ThemeHandler.currentTheme.primaryColor,
