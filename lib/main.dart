@@ -34,6 +34,7 @@ class MyApp extends StatelessWidget {
       child: Consumer<AppConfiguration>(
         builder: (context, config, _) {
           return MaterialApp.router(
+            debugShowCheckedModeBanner: false,
             title: AppStrings.appName,
             builder: (context, child) {
               ResponsiveUtil().init(context);

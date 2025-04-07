@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rtinnovations_task/core/themes/theme_handler.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
   late Animation<double> _scaleAnimation;
 
   final Duration _animationDuration = const Duration(milliseconds: 800);
-  final Duration _splashDuration = const Duration(seconds: 3);
+  final Duration _splashDuration = const Duration(seconds: 1);
   final double _logoSize = 120.0;
 
   @override
@@ -39,8 +40,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Future.delayed(_splashDuration, () {
       if (mounted) {
-        // Navigator.pushReplacementNamed(context, '/home');
-        print('Navigating to home screen...');
+        context.go('/home');
       }
     });
   }
