@@ -57,14 +57,12 @@ class EmployeeController extends FeatureController {
 
   Future<int> genIderateId() async {
     // Generate a unique ID for the new employee
-    var result =
-        await database!.query('employees', columns: ['MAX(id) as max_id']);
 
-    int? maxId = result.isNotEmpty ? result.first['max_id'] as int? : 0;
+    var result = await DatabaseHelper.instance.count('employees');
 
-    int newId = maxId ?? 0 + 1;
+    int id = result + 1;
 
-    return newId;
+    return id;
   }
 
   void showStartDatePicker(BuildContext context) async {

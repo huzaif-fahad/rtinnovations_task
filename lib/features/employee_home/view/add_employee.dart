@@ -6,7 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:rtinnovations_task/features/employee_home/logic/employee_bloc.dart';
 import 'package:rtinnovations_task/features/employee_home/models/employee.dart';
+import 'package:rtinnovations_task/utils/extensions/colors_exs.dart';
 
+import '../../../core/l10n/app_strings.dart';
+import '../../../core/themes/theme_handler.dart';
+import '../../../core/themes/typography/app_typography.dart';
 import '../controllers/emp_controller.dart';
 import '../models/position.dart';
 
@@ -105,10 +109,13 @@ class _AddEmployeeState extends State<AddEmployee> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ('#F2F2F2').toColor(),
       appBar: AppBar(
-        title: const Text('Add Employee Details'),
-        backgroundColor: Colors.blue,
-        elevation: 0,
+        title: Text(
+          AppStrings.ofUntranslated(context).addEmployeeTitle,
+          style: AppTypography.h5.apply(),
+        ),
+        backgroundColor: ThemeHandler.currentTheme.primaryColor,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -322,6 +329,8 @@ class _AddEmployeeState extends State<AddEmployee> {
                       ),
                     ),
                   );
+                  _controller.startDateNotifier.value = null;
+                  _controller.endDateNotifier.value = null;
 
                   context.go(
                     '/home',
