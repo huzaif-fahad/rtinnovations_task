@@ -279,7 +279,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     ),
                   ),
                   const Spacer(),
-                  Container(
+                  SizedBox(
                     width: 74.w,
                     child: TextButton(
                       onPressed: () {
@@ -304,7 +304,7 @@ class _CustomDatePickerState extends State<CustomDatePicker> {
                     ),
                   ),
                   const SizedBox(width: 8),
-                  Container(
+                  SizedBox(
                     width: 74.w,
                     child: ElevatedButton(
                       onPressed: () {

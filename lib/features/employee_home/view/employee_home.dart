@@ -5,8 +5,10 @@ import 'package:rtinnovations_task/core/themes/theme_handler.dart';
 import 'package:rtinnovations_task/core/themes/typography/app_typography.dart';
 import 'package:rtinnovations_task/features/employee_home/controllers/emp_controller.dart';
 import 'package:rtinnovations_task/features/employee_home/logic/employee_bloc.dart';
-
-import '../models/category.dart';
+import 'package:rtinnovations_task/features/employee_home/view/widgets/employee_list.dart';
+import 'package:rtinnovations_task/utils/extensions/colors_exs.dart';
+import 'package:rtinnovations_task/utils/extensions/responsive_exs.dart';
+import '../../../utils/custom_date_picker.dart';
 import 'widgets/empty_records.dart';
 
 class EmployeeHome extends StatefulWidget {
@@ -29,36 +31,74 @@ class _EmployeeHomeState extends State<EmployeeHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ('#F2F2F2').toColor(),
         appBar: AppBar(
           title: Text(
             AppStrings.ofUntranslated(context).employeeListTitle,
-            style: AppTypography.h5,
+            style: AppTypography.h5.apply(),
           ),
           backgroundColor: ThemeHandler.currentTheme.primaryColor,
         ),
-        body: Center(
-          child: BlocConsumer<EmployeesBloc, EmployeesState>(
-            builder: (context, state) {
-              return _stateWiseWidget(state);
-            },
-            listener: (context, state) {
-              if (state is EmployeesError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                    backgroundColor: Colors.red,
+        bottomNavigationBar: ValueListenableBuilder(
+          valueListenable: employeeController.isBottomBarVisible,
+          builder: (context, value, child) {
+            return value ? child! : const SizedBox.shrink();
+          },
+          child: Padding(
+            padding: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AppStrings.ofUntranslated(context).swipeToDelete,
+                  style: AppTypography.body1.apply(),
+                ),
+                FloatingActionButton(
+                  onPressed: () {
+                    CustomDatePicker.show(context);
+                  },
+                  elevation: 0,
+                  backgroundColor: ThemeHandler.currentTheme.primaryColor,
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
                   ),
-                );
-              }
-            },
+                ),
+              ],
+            ),
           ),
+        ),
+        body: BlocConsumer<EmployeesBloc, EmployeesState>(
+          builder: (context, state) {
+            return _stateWiseWidget(state);
+          },
+          listener: (context, state) {
+            if (state is EmployeesError) {
+              employeeController.isBottomBarVisible.value = false;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
+
+            if (state is EmployeesLoaded) {
+              state.employees.isNotEmpty
+                  ? employeeController.isBottomBarVisible.value = true
+                  : employeeController.isBottomBarVisible.value = false;
+            } else {
+              employeeController.isBottomBarVisible.value = false;
+            }
+          },
         ));
   }
 
   Widget _stateWiseWidget(EmployeesState state) {
     switch (state) {
       case EmployeesEmpty():
-        return const EmptyRecords();
+        return const Center(child: EmptyRecords());
 
       case EmployeesLoading():
         return const Center(
@@ -70,56 +110,19 @@ class _EmployeeHomeState extends State<EmployeeHome> {
         if (employees.isEmpty) {
           return const EmptyRecords();
         }
-        // return a column with current employees list and previous employees list
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "Current Employees",
-              style: AppTypography.h5.apply(color: Colors.grey),
-            ),
-            // List of current employees
 
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: employees[Category.current]?.length ?? 0,
-              itemBuilder: (context, index) {
-                final employee = employees[Category.current]![index];
-                return ListTile(
-                  title: Text(employee.name),
-                  subtitle: Text(employee.fromDate.toString()),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      employeeController.deleteEmployee(employee.id);
-                    },
-                  ),
-                );
-              },
-            ),
-            const SizedBox(height: 20),
-            Text(
-              "Previous Employees",
-              style: AppTypography.h5.apply(color: Colors.grey),
-            ),
-            // List of previous employees
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: employees[Category.previous]?.length ?? 0,
-              itemBuilder: (context, index) {
-                final employee = employees[Category.previous]![index];
-                return ListTile(
-                  title: Text(employee.name),
-                  subtitle: Text(employee.toDate.toString()),
-                );
-              },
-            ),
-            // Add your widget to display previous employees
-          ],
+        return EmployeeListWidget(
+          employees: employees,
+          employeeController: employeeController,
         );
+
+      case EmployeesError():
+        return Center(
+          child: Text(
+            AppStrings.ofUntranslated(context).errorOccured + (state).message,
+          ),
+        );
+
       default:
         return Center(
             child: Text(

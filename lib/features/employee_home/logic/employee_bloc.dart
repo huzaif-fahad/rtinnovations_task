@@ -4,7 +4,6 @@ import '../models/employee.dart';
 import '../../../utils/db/local_db_helper.dart';
 
 import '../models/category.dart' as cat;
-import '../models/position.dart';
 part 'employee_event.dart';
 part 'employee_state.dart';
 
@@ -39,7 +38,9 @@ class EmployeesBloc extends Bloc<EmployeesEvent, EmployeesState> {
 
       final allEmployees =
           results.map((map) => Employee.fromJson(map)).toList();
-      print("All Employees: ${allEmployees.length}");
+      if (kDebugMode) {
+        print("All Employees: ${allEmployees.length}");
+      }
 
       final Map<cat.Category, List<Employee>> categorizedEmployees = {
         cat.Category.current: [],

@@ -7,10 +7,18 @@ import '../../../core/abstracts/feature_controller.dart';
 import '../logic/employee_bloc.dart';
 
 class EmployeeController extends FeatureController {
-  EmployeeController() : super();
+  //Singleton instance
+  static final EmployeeController _instance = EmployeeController._internal();
+  factory EmployeeController() {
+    return _instance;
+  }
+  EmployeeController._internal();
 
   BuildContext? context;
 
+  Database? database;
+
+  ValueNotifier<bool> isBottomBarVisible = ValueNotifier(false);
   @override
   void init() {
     if (context == null) {
@@ -18,16 +26,14 @@ class EmployeeController extends FeatureController {
           'Context is not set. Please set the context before using.');
     }
 
-    DatabaseHelper.instance.database.then((db) {
-      DatabaseHelper.instance.insertDummyData();
-    });
-
+    DatabaseHelper.instance.database.then((db) {});
+    DatabaseHelper.instance.insertDummyData();
     BlocProvider.of<EmployeesBloc>(context!).add(EmployeesFetchEvent());
   }
 
   @override
   void dispose() {
-    // Add any cleanup logic here
+    DatabaseHelper.instance.close();
     super.dispose();
   }
 
