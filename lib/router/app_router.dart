@@ -45,16 +45,6 @@ class AppRouter {
         path: '/add-empl',
         builder: (BuildContext context, GoRouterState state) {
           return PopScope(
-            onPopInvokedWithResult: (didPop, d) {
-              if (didPop) {
-                // This function will be called when popping back from add-empl to home
-                print('Navigated back from AddEmployee to EmployeeHome');
-
-                print('Result: $d');
-                // You can add additional logic here if needed
-              }
-              return;
-            },
             child: BlocProvider(
               create: (context) => EmployeesBloc(),
               lazy: false,
